@@ -1,0 +1,504 @@
+from discord.ext import commands
+import discord
+import json 
+
+bot = commands.Bot(command_prefix="!",help_command=None, intents = discord.Intents.all())
+
+import asyncio
+
+@bot.event
+async def on_ready():
+    print(f"We have logged in as {bot.user}")
+    activities = [
+        discord.Activity(type=discord.ActivityType.watching, name="boss wolfi zu xD"),
+        discord.Activity(type=discord.ActivityType.playing, name="support"),
+        discord.Activity(type=discord.ActivityType.listening, name="user ")
+    ]
+    while True:
+        for activity in activities:
+            await bot.change_presence(activity=activity)
+            await asyncio.sleep(10) # 5 Sekunden warten bis zum nächsten Wechsel
+
+
+
+
+# Importieren Sie die erforderlichen Bibliotheken
+import discord
+from discord.ext import commands
+
+
+
+# Erstellen Sie den Help-Befehl
+@bot.command()
+async def help(ctx):
+    # Erstellen Sie das Embed-Objekt
+    embed = discord.Embed(title="Help Menu", description="Hier sind die verfügbaren Befehle:", color=0x00ff00)
+    embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/966429841610137610/1104472386457313300/Thanx-Media-post-launch-support.png")
+
+    # Fügen Sie die Befehle und ihre Beschreibungen hinzu
+    embed.add_field(name="!help", value="Zeigt dieses Menü an", inline=True)
+    embed.add_field(name="!ban", value="ban ein user", inline=True)
+    embed.add_field(name="!kick", value="kick ein user", inline=True)
+    embed.add_field(name="!yt", value="das ist der yt kanal von boss wolfi", inline=True)
+    embed.add_field(name="!ticket", value="wird ein ticket aufgemacht", inline=True)
+    embed.add_field(name="!verify", value="ist ein verify system aber zurzeit kann man nur ein chanel id machen wird noch geänder", inline=True)
+   
+   
+   
+    # Senden Sie das Embed an den Benutzer
+    await ctx.send(embed=embed)
+
+
+
+
+
+import discord
+from discord.ext import commands
+
+
+
+# Befehl, um die Hilfe anzuzeigen
+@bot.command()
+async def hilfe(ctx):
+    help_embed = discord.Embed(title='Hilfe', description='Hier ist eine Liste aller Befehle:', color=0x00ff00)
+    help_embed.add_field(name='!hallo', value='Sagt hallo zurück', inline=True)
+    help_embed.add_field(name='!info', value='Zeigt Informationen zum Server an', inline=True)
+    help_embed.set_footer(text='Viel Spaß beim Benutzen des Bots!')
+    await ctx.send(embed=help_embed)
+
+# Befehl, um hallo zurückzusagen
+@bot.command()
+async def hallo(ctx):
+    await ctx.send(f'Hallo {ctx.author.mention}!')
+
+# Befehl, um Informationen zum Server anzuzeigen
+@bot.command()
+async def info(ctx):
+    server_embed = discord.Embed(title=f'Informationen zu {ctx.guild.name}', color=0x00ff00)
+    server_embed.add_field(name='Besitzer', value=f'{ctx.guild.owner.name}#{ctx.guild.owner.discriminator}', inline=True)
+    server_embed.add_field(name='Mitglieder', value=f'{ctx.guild.member_count}', inline=True)
+    server_embed.set_footer(text=f'ID: {ctx.guild.id}')
+    await ctx.send(embed=server_embed)
+
+
+
+
+
+  
+
+
+
+@bot.command()
+@commands.has_permissions(manage_channels=True)
+async def ban(ctx, member: discord.Member, * , reason = None):
+  if member == None:
+    ctx.send('No User')
+  if reason == None:
+    await member.ban(reason = reason)
+    embed = discord.Embed(title='Ban')
+    embed.add_field(name=f"{member} Banned", value="Reason : **Kein Grund**", inline=True)
+    await ctx.send(embed = embed)
+    
+  else:
+    await member.ban(reason = reason)
+    embed = discord.Embed(title="ban")
+    embed.add_field(name=f"{member} Banned", value=f"Grund: {reason}", inline=True)
+    await ctx.send(embed = embed)
+    await member.send(embed = embed)
+
+
+
+@bot.command()
+@commands.has_permissions(manage_channels=True)
+async def kick(ctx, member: discord.Member, * , reason = None):
+   if member == None:
+    ctx.send('No User')
+   if reason == None:
+    await member.kick(reason = reason)
+    embed = discord.Embed(title='kick')
+    embed.add_field(name=f"{member} kicked", value="Reason : **Kein Grund**", inline=treue)
+    await ctx.send(embed = embed)
+    await member.send(embed = embed)
+
+    await member.kick(reason = reason)
+    embed = discord.Embed(title="kick")
+    embed.add_field(name=f"{member} kiked", value=f"Grund : {reason}", inline=treue)
+    await ctx.send(embed = embed)
+    await member.send(embed = embed)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import discord
+from discord.ext import commands
+
+
+CHANNEL_ID = 1103015850941890561 # Die Id vom Leave-Channel
+
+@bot.event
+async def on_member_remove(member):
+    embed = discord.Embed(
+        color=0x77dd77,
+        title='Ein Member hat den Server verlassen.',
+        description=f'<@{member.id}> hat den Server leider verlassen.'
+    )
+    channel = bot.get_channel(CHANNEL_ID)
+    await channel.send(embed=embed)
+
+
+
+
+
+
+
+
+from discord.ext import commands
+
+
+
+# Stellen Sie die Role-ID ein, die Benutzer erhalten sollen, wenn sie verifiziert werden
+verified_role_id = 1103015850388242557
+
+# Stellen Sie die Channel-ID ein, in dem das Verifizierungs-Embed gesendet wird
+verify_channel_id = 1103015850941890564
+
+# Erstellen Sie eine neue Embed-Nachricht, die an die Benutzer gesendet wird
+verify_embed = discord.Embed(title='Verifizierung', description='Bitte reagieren Sie mit ✅, um verifiziert zu werden.', color=discord.Color.blue())
+
+# Erstellen Sie eine neue Reaktion, die Benutzer verwenden können, um ihre Verifizierung abzuschließen
+verify_reaction = '✅'
+
+# Erstellen Sie eine Discord-Kommando-Funktion, die Benutzern das Verifizierungs-Embed sendet
+@bot.command()
+async def verify(ctx):
+    # Überprüfen Sie, ob der Benutzer bereits verifiziert ist
+    if discord.utils.get(ctx.author.roles, id=verified_role_id):
+        await ctx.send('Du bist bereits verifiziert!')
+        return
+    
+    # Senden Sie das Verifizierungs-Embed in den Verifizierungs-Channel
+    verify_channel = bot.get_channel(verify_channel_id)
+    verify_msg = await verify_channel.send(embed=verify_embed)
+    
+    # Fügen Sie die Verifizierungsreaktion zum Embed hinzu
+    await verify_msg.add_reaction(verify_reaction)
+
+# Erstellen Sie eine Discord-Event-Funktion, die auf die Verifizierungsreaktion reagiert
+@bot.event
+async def on_raw_reaction_add(payload):
+    # Überprüfen Sie, ob die Reaktion in dem Verifizierungs-Channel stattfindet
+    if payload.channel_id != verify_channel_id:
+        return
+    
+    # Überprüfen Sie, ob die Reaktion von einem Benutzer stammt
+    if payload.member.bot:
+        return
+    
+    # Überprüfen Sie, ob die Reaktion die Verifizierungsreaktion ist
+    if str(payload.emoji) != verify_reaction:
+        return
+    
+    # Verifizieren Sie den Benutzer, indem Sie ihm die verifizierte Rolle geben
+    guild = bot.get_guild(payload.guild_id)
+    member = guild.get_member(payload.user_id)
+    verified_role = discord.utils.get(guild.roles, id=verified_role_id)
+    await member.add_roles(verified_role)
+    
+    # Bestätigen Sie die Verifizierung im Verifizierungs-Channel
+    verify_channel = bot.get_channel(verify_channel_id)
+    await verify_channel.send(f'{member.mention} ist jetzt verifiziert!')
+    
+
+
+
+
+@bot.command()
+async def yt(ctx):
+    await ctx.send("Das ist der YouTube Knal von Boss Wolfi hier der Links https://www.youtube.com/@bassrollewolfi/videos.")
+
+
+import discord
+from discord.ext import commands
+
+
+@bot.command()
+async def clear(ctx, amount=100):
+    await ctx.channel.purge(limit=amount+1)
+    await ctx.send(f'{amount} Nachrichten wurden gelöscht.', delete_after=5)
+
+
+import discord
+
+
+@bot.event
+async def on_member_join(member):
+    # Hier wird das Bild eingebunden
+    embed = discord.Embed(title=f"Willkommen {member.name}!", description="Auf Playground Hoffe ihr habt dann spaß aber bevor ihr was macht bitte die regeln druch zu Lesen!.", color=0x00ff00)
+    embed.set_image(url="https://0701.static.prezi.com/preview/v2/d3tpiuw4ita4pdiderpdjacqip6jc3sachvcdoaizecfr3dnitcq_3_0.png")
+    channel = member.guild.get_channel(1103015850941890560) # Hier die ID des Willkommenskanals einfügen
+    await channel.send(embed=embed)
+
+
+
+
+
+import discord
+from discord.ext import commands
+
+
+# Warnliste initialisieren
+warns = {}
+
+
+
+@bot.command()
+async def warn(ctx, member: discord.Member, reason=None):
+    if not ctx.message.author.guild_permissions.administrator:
+        await ctx.send("Nur Administratoren können Mitglieder warnen.")
+        return
+
+    if member.id == ctx.message.author.id:
+        await ctx.send("Du kannst dich nicht selbst warnen.")
+        return
+
+    if member.id not in warns:
+        warns[member.id] = []
+
+    warns[member.id].append(reason)
+    await ctx.send(f"{member.mention} wurde gewarnt. Grund: {reason}.")
+
+@bot.command()
+async def unwarn(ctx, member: discord.Member, index: int):
+    if not ctx.message.author.guild_permissions.administrator:
+        await ctx.send("Nur Administratoren können Warnungen entfernen.")
+        return
+
+    if member.id not in warns:
+        await ctx.send("Dieses Mitglied wurde noch nicht gewarnt.")
+        return
+
+    if index >= len(warns[member.id]):
+        await ctx.send("Diese Warnung existiert nicht.")
+        return
+
+    warns[member.id].pop(index)
+    await ctx.send(f"Die Warnung von {member.mention} wurde entfernt.")
+
+@bot.command()
+async def remove_warn(ctx, member: discord.Member):
+    if not ctx.message.author.guild_permissions.administrator:
+        await ctx.send("Nur Administratoren können Warnungen entfernen.")
+        return
+
+    if member.id not in warns:
+        await ctx.send("Dieses Mitglied wurde noch nicht gewarnt.")
+        return
+
+    warns.pop(member.id)
+    await ctx.send(f"Alle Warnungen von {member.mention} wurden entfernt.")
+
+@bot.command()
+async def warn_list(ctx, member: discord.Member=None):
+    if member is None:
+        member = ctx.message.author
+
+    if not ctx.message.author.guild_permissions.administrator and member.id != ctx.message.author.id:
+        await ctx.send("Nur Administratoren können die Warnungen anderer Mitglieder sehen.")
+        return
+
+    if member.id not in warns:
+        await ctx.send("Dieses Mitglied wurde noch nicht gewarnt.")
+        return
+
+    embed = discord.Embed(title=f"Warnungen von {member.display_name}")
+    for i, reason in enumerate(warns[member.id]):
+        embed.add_field(name=f"Warnung {i+1}", value=reason, inline=True)
+
+    await ctx.send(embed=embed)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+import discord
+from discord.ext import commands
+import datetime
+import asyncio
+
+# Error anzeigen
+import sys
+import logging
+
+logging.basicConfig(stream=sys.stdout, level=logging.ERROR)
+
+
+
+
+
+bot.remove_command("help")
+
+
+@bot.event
+async def on_ready():
+    print(f'{bot.user.name} ist bereit.')
+
+
+@bot.command()
+async def ticket(ctx):
+    if ctx.author.id == 977993035717681252:
+        embed = discord.Embed(title='**Ticket**',
+                              description=f'Wenn du ein Ticket erstellen möchtest, drücke einfach die Reaktion: 💼',
+                              timestamp=datetime.datetime.utcnow(),
+                              color=0x808080)
+        msg = await ctx.send(embed=embed)
+        await msg.add_reaction('💼')
+    else:
+        return
+
+
+@bot.event
+async def on_raw_reaction_add(payload):
+    if payload.member == bot.user:
+        return
+
+    if payload.emoji.name == '💼':  # Stellt sicher, dass die Reaktion die richtige ist
+        guild = bot.get_guild(payload.guild_id)
+        channel = guild.get_channel(payload.channel_id)
+        message = await channel.fetch_message(payload.message_id)
+
+        # Überprüft, ob der Kanal bereits existiert
+        for c in guild.channels:
+            if c.name == f'{payload.member.name}s-ticket':
+                await message.remove_reaction(payload.emoji, payload.member)
+                return await payload.member.send('Du hast bereits ein Ticket offen.')
+
+        # Erstelle das Support-Ticket
+        SUPPORT_ROLE_ID = 1103015850417606716
+
+        overwrites = {
+            guild.default_role: discord.PermissionOverwrite(read_messages=False),
+            payload.member: discord.PermissionOverwrite(read_messages=True, send_messages=True),
+        }
+        category = discord.utils.get(guild.categories, name='Tickets')
+        if category is None:
+            category = await guild.create_category(name='Tickets')
+        channel = await guild.create_text_channel(name=f'{payload.member.name}s-ticket', overwrites=overwrites, category=category)
+
+        # Sende eine Nachricht mit dem Link zum neuen Ticket
+        embed1 = discord.Embed(title='**Ticket**',
+                               description=f'Dein Ticket wurde erstellt: {channel.mention}',
+                               timestamp=datetime.datetime.utcnow(),
+                               color=0x808080)
+
+        await payload.member.send(embed=embed1)
+
+        # Sende eine Nachricht im Ticket
+        embed = discord.Embed(title=f'**{payload.member.name}`s Ticket**',
+                              description=f'<@&{SUPPORT_ROLE_ID}>\nBitte um Bearbeitung.',
+                              timestamp=datetime.datetime.utcnow(),
+                              color=0x808080)
+
+        embed.add_field(name='Ticket schließen:',
+                        value='💀')
+
+        reaction_message = await channel.send(f'<@&{SUPPORT_ROLE_ID}>', embed=embed)
+        await reaction_message.add_reaction('💀')
+
+        # Überprüfung der Reaktion
+        def check(reaction, user):
+            return str(reaction.emoji) == '💀' and user.guild_permissions.administrator and reaction.message == reaction_message
+
+        try:
+            reaction, user = await bot.wait_for('reaction_add', timeout=None, check=check)
+        except:
+            pass
+        else:
+            cooldown_message = await channel.send('Ticket wird gelöscht in **5**')
+            for i in range(4, 0, -1):
+                await asyncio.sleep(1)
+                await cooldown_message.edit(content=f'Ticket wird gelöscht in **{i}**')
+            await asyncio.sleep(1)
+            await cooldown_message.edit(content='Ticket wird gelöscht in **Bye!**')
+            await asyncio.sleep(1)
+            await channel.send('Ticket wurde geschlossen.')
+            await channel.delete()
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bot.run("Bot_Token")
